@@ -3,14 +3,11 @@ import java.io.*;
 
 
 public class Generator {
-    private static String[] beginning;
-    private static String[] middle;
-    private static String[] end;
+    private static List <String> beginning;
+    private static List <String> middle;
+    private static List <String> end;
 
     public Generator() throws Exception {
-        beginning = new String[] {"b", "d", "f", "g", "h", "k", "l", "m", "n", "s", "t", "v", "z"};
-        middle = new String[] {"abt", "ikir", "mik", "zam", "nair"};
-        end = new String[] {"ia", "ios", "idel", "ian", "iri", "i", "o", "ene", "erti", "on", "im", "adel", "ingo", "ica", "us"};
         loadData();
     }
     private void loadData() throws Exception {
@@ -20,23 +17,30 @@ public class Generator {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 records.add(Arrays.asList(values));
-                System.out.println(records);
+
             }
+            beginning = records.get(0);
+            middle = records.get(1);
+            end = records.get(2);
         }
 
 
     }
     public static String generateName() {
-        int b = (int) (Math.random() * beginning.length);
-        int m = (int) (Math.random() * middle.length);
-        int e = (int) (Math.random() * end.length);
+        int b = (int) (Math.random() * beginning.size());
+        int m = (int) (Math.random() * middle.size());
+        int e = (int) (Math.random() * end.size());
 
-        return beginning[b] + middle[m] + end[e];
+        return beginning.get(b) + middle.get(m) + end.get(e);
     }
-    public String toString() {
-        for(int i =0; i <=50; i++) {
-            System.out.println(generateName());
+    public void outputToCSV() throws Exception {
+        FileWriter csvWriter = new FileWriter("output.csv");
+        for(int i =0; i <=1000; i++) {
+            for(int j =0; j < 20; j++) {
+                csvWriter.append(generateName() + ",");
+            }
+            csvWriter.append("\n\n");
         }
-        return "";
+        csvWriter.close();
     }
 }
